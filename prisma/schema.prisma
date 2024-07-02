@@ -1,0 +1,29 @@
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+  token String?
+  chat Chats[]
+}
+
+model Chats {
+  id Int @id @default(autoincrement())
+  send User @relation(fields: [sendID], references: [id])
+  sendID Int
+  receiverId Int
+  msg String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
